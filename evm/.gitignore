@@ -1,0 +1,13 @@
+# build generate output
+dist
+
+# Dependency directory
+node_modules/
+
+# Vim swap files
+*.swp
+
+package-lock.json
+
+# dotenv environment variable file
+.env
