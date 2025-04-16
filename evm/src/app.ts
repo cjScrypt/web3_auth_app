@@ -1,0 +1,8 @@
+import { Express } from "express";
+import { AppMiddleware } from "./middlewares";
+
+export const configureApp = (app: Express) => {
+    app.use(AppMiddleware.addBodyToRequestFromJson);
+    app.use(AppMiddleware.addBodyToRequestFromUrl);
+    app.use(AppMiddleware.addCorsHeaderToResponse);
+}
