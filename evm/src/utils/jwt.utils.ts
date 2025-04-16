@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { JWT_SECRET, WALLET_PROOF_EXPIRY } from "../config";
+import { JWT_SECRET } from "../config";
 import { GeneratePayloadDto } from "../types";
 
 export class JwtUtils {
@@ -9,5 +9,23 @@ export class JwtUtils {
             JWT_SECRET,
             { expiresIn: "30m", algorithm: "HS256" }
         );
+    }
+
+    static verifyToken(token: string) {
+        try {
+            const decoded = jwt.verify(
+                token,
+                JWT_SECRET,
+                { algorithms: ["HS256"] }
+            );
+
+            if (typeof decoded !== "string") {
+                return decoded;
+            }
+        } catch (error) {
+            return null;
+        }
+
+        return null;
     }
 }
