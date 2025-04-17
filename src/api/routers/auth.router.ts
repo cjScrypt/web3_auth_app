@@ -9,6 +9,6 @@ authRouter.post(
 );
 
 authRouter.post(
-    "signin",
-    AuthController.signin
+    "signin-evm",
+    AuthController.signinEVM
 );

@@ -18,11 +18,11 @@ export class AuthController {
         }
     }
 
-    static async signin(req: Request, res: Response, next: NextFunction) {
+    static async signinEVM(req: Request, res: Response, next: NextFunction) {
         try {
             const { signature, address, payloadToken } = req.body as WalletSignInDto;
 
-            const data = await (new AuthService()).signIn({
+            const data = await (new AuthService()).signInEVM({
                 signature,
                 address,
                 payloadToken

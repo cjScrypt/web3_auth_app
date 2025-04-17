@@ -17,7 +17,7 @@ export class AuthService {
         return payloadToken;
     }
 
-    private checkProof(data: WalletSignInDto) {
+    private checkProofEVM(data: WalletSignInDto) {
         const decoded = JwtUtils.verifyToken(data.payloadToken);
         if (!decoded) {
             throw new Error("Invalid or expired token");
@@ -40,8 +40,8 @@ export class AuthService {
         return true;
     }
 
-    async signIn(data: WalletSignInDto) {
-        this.checkProof(data);
+    async signInEVM(data: WalletSignInDto) {
+        this.checkProofEVM(data);
 
         const user = await this.userService.getOrCreateUser(data.address);
 
