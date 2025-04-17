@@ -32,7 +32,7 @@ export class AuthService {
             throw new Error("Invalid wallet address");
         }
 
-        const recoveredAddress = ethers.verifyMessage(expectedAddress, data.signature);
+        const recoveredAddress = ethers.verifyMessage(expectedAddress, data.proof);
         if (recoveredAddress.toLowerCase() !== expectedAddress.toLowerCase()) {
             throw new Error("Invalid signature");
         }

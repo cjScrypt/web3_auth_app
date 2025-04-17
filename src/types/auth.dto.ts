@@ -6,7 +6,7 @@ export interface GeneratePayloadDto {
 }
 
 export interface WalletSignInDto {
-    signature: string,
+    proof: string,
     address: string,
     payloadToken: string
 }
