@@ -5,4 +5,6 @@ export const configureApp = (app: Express) => {
     app.use(AppMiddleware.addBodyToRequestFromJson);
     app.use(AppMiddleware.addBodyToRequestFromUrl);
     app.use(AppMiddleware.addCorsHeaderToResponse);
+
+    app.use(AppMiddleware.addUserToRequestFromAuth);
 }
