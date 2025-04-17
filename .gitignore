@@ -1,0 +1,16 @@
+# build generate output
+dist
+
+# Dependency directory
+node_modules/
+
+# Prisma migration files
+migrations/
+
+# Vim swap files
+*.swp
+
+package-lock.json
+
+# dotenv environment variable file
+.env
