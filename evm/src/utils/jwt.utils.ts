@@ -15,7 +15,7 @@ export class JwtUtils {
         return jwt.sign(
             payload,
             JWT_SECRET,
-            { expiresIn: "24", algorithm: "HS256" }
+            { expiresIn: "24h", algorithm: "HS256" }
         );
     }
 
