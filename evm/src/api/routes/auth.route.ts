@@ -7,3 +7,8 @@ authRouter.post(
     "generatePayload",
     AuthController.generatePayload
 );
+
+authRouter.post(
+    "signin",
+    AuthController.signin
+);
