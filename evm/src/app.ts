@@ -1,4 +1,5 @@
 import { Express } from "express";
+import { authRouter } from "./api/routers";
 import { AppMiddleware } from "./middlewares";
 
 export const configureApp = (app: Express) => {
@@ -7,4 +8,6 @@ export const configureApp = (app: Express) => {
     app.use(AppMiddleware.addCorsHeaderToResponse);
 
     app.use(AppMiddleware.addUserToRequestFromAuth);
+
+    app.use("auth", authRouter);
 }
