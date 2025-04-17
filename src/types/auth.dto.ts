@@ -1,5 +1,8 @@
+export type ChainId = "evm" | "ton";
+
 export interface GeneratePayloadDto {
-    address: string
+    address: string,
+    chainId: ChainId
 }
 
 export interface WalletSignInDto {

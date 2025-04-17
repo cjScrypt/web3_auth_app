@@ -1,22 +1,17 @@
 import { ethers } from "ethers";
-import { User } from "@prisma/client";
-import { UserRepository } from "../database/repository";
-import prisma from "../database/prisma/client";
-import { WalletSignInDto } from "../types";
-import { JwtUtils } from "../utils";
 import { UserService } from "./user.service";
+import { ChainId, WalletSignInDto } from "../types";
+import { JwtUtils } from "../utils";
 
 export class AuthService {
-    private readonly userRepository: UserRepository;
     private readonly userService: UserService;
 
     constructor() {
-        this.userRepository = new UserRepository(prisma);
         this.userService = new UserService()
     }
 
-    async generateSigninPayload(address: string) {
-        const payload = { address }
+    async generateSigninPayload(address: string, chainId: ChainId) {
+        const payload = { address, chainId }
         const payloadToken = JwtUtils.walletProofSignature(payload);
 
         return payloadToken;
@@ -26,6 +21,10 @@ export class AuthService {
         const decoded = JwtUtils.verifyToken(data.payloadToken);
         if (!decoded) {
             throw new Error("Invalid or expired token");
+        }
+
+        if (decoded.chainId !== "evm") {
+            throw new Error("Chain mismatch. Expected 'EVM' signature");
         }
 
         const expectedAddress = decoded.address;
