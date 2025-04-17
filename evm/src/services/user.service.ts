@@ -8,8 +8,12 @@ export class UserService {
         this.userRepository = new UserRepository(prisma);
     }
 
+    async getUser(filter: { id?: string, walletAddress?: string }) {
+        return this.userRepository.findOne(filter);
+    }
+
     async getOrCreateUser(walletAddress: string) {
-        let user = await this.userRepository.findOne({ walletAddress });
+        let user = await this.getUser({ walletAddress });
         if (!user) {
             user = await this.userRepository.create({ walletAddress });
         }
