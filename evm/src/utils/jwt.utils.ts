@@ -11,6 +11,14 @@ export class JwtUtils {
         );
     }
 
+    static generateAuthToken(payload: {}) {
+        return jwt.sign(
+            payload,
+            JWT_SECRET,
+            { expiresIn: "24", algorithm: "HS256" }
+        );
+    }
+
     static verifyToken(token: string) {
         try {
             const decoded = jwt.verify(

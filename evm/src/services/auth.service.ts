@@ -1,14 +1,18 @@
 import { ethers } from "ethers";
+import { User } from "@prisma/client";
 import { UserRepository } from "../database/repository";
 import prisma from "../database/prisma/client";
 import { WalletSignInDto } from "../types";
 import { JwtUtils } from "../utils";
+import { UserService } from "./user.service";
 
 export class AuthService {
     private readonly userRepository: UserRepository;
+    private readonly userService: UserService;
 
     constructor() {
         this.userRepository = new UserRepository(prisma);
+        this.userService = new UserService()
     }
 
     async generateSigninPayload(address: string) {
@@ -35,5 +39,15 @@ export class AuthService {
         }
 
         return true;
+    }
+
+    async signIn(data: WalletSignInDto) {
+        this.checkProof(data);
+
+        const user = await this.userService.getOrCreateUser(data.address);
+
+        const token = JwtUtils.generateAuthToken({ id: user.id });
+
+        return { token, user };
     }
 }
