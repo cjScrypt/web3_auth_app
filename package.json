@@ -31,7 +31,8 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "prisma": "^6.0.1",
-    "reflect-metadata": "^0.2.2"
+    "reflect-metadata": "^0.2.2",
+    "tweetnacl": "^1.0.3"
   },
   "prisma": {
     "schema": "./src/database/prisma"

@@ -24,4 +24,22 @@ export class TonApiService {
 
         return new TonApiService(client);
     }
+
+    async getWalletPublicKey(address: string) {
+        let result;
+
+        try {
+            const lastBlock = await this.client.getLastBlock();
+            result = await this.client.runMethod(
+                lastBlock.last.seqno,
+                Address.parse(address),
+                "get_public_key",
+                []
+            );
+        } catch (error) {
+            return null;
+        }
+
+        return Buffer.from(result.reader.readBigNumber().toString(16).padStart(64, "0"), "hex");
+    }
 }
