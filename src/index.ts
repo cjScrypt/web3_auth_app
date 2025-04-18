@@ -1,4 +1,5 @@
 import express from "express";
+import 'reflect-metadata';
 
 import { configureApp } from "./app";
 import { PORT } from "./config";
