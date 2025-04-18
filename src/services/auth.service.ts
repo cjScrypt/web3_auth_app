@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import { UserService } from "./user.service";
-import { ChainId, WalletSignInDto } from "../types";
+import { CHAIN_ID, WalletSignInDto } from "../types";
 import { JwtUtils } from "../utils";
 
 export class AuthService {
@@ -10,7 +10,7 @@ export class AuthService {
         this.userService = new UserService()
     }
 
-    async generateSigninPayload(address: string, chainId: ChainId) {
+    async generateSigninPayload(address: string, chainId: CHAIN_ID) {
         const payload = { address, chainId }
         const payloadToken = JwtUtils.walletProofSignature(payload);
 
@@ -23,7 +23,7 @@ export class AuthService {
             throw new Error("Invalid or expired token");
         }
 
-        if (decoded.chainId !== "evm") {
+        if (decoded.chainId !== CHAIN_ID.EVM) {
             throw new Error("Chain mismatch. Expected 'EVM' signature");
         }
 
