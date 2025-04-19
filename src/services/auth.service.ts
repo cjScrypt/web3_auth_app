@@ -1,16 +1,19 @@
 import { ethers } from "ethers";
 import { UserService } from "./user.service";
-import { ChainId, WalletSignInDto } from "../types";
+import { CHAIN_ID, CheckProofDto, WalletSignInDto } from "../types";
 import { JwtUtils } from "../utils";
+import { TonProofService } from "./tonProof.service";
 
 export class AuthService {
+    private readonly tonProofService: TonProofService;
     private readonly userService: UserService;
 
     constructor() {
+        this.tonProofService = new TonProofService();
         this.userService = new UserService()
     }
 
-    async generateSigninPayload(address: string, chainId: ChainId) {
+    async generateSigninPayload(address: string, chainId: CHAIN_ID) {
         const payload = { address, chainId }
         const payloadToken = JwtUtils.walletProofSignature(payload);
 
@@ -23,7 +26,7 @@ export class AuthService {
             throw new Error("Invalid or expired token");
         }
 
-        if (decoded.chainId !== "evm") {
+        if (decoded.chainId !== CHAIN_ID.EVM) {
             throw new Error("Chain mismatch. Expected 'EVM' signature");
         }
 
@@ -42,6 +45,16 @@ export class AuthService {
 
     async signInEVM(data: WalletSignInDto) {
         this.checkProofEVM(data);
+
+        const user = await this.userService.getOrCreateUser(data.address);
+
+        const token = JwtUtils.generateAuthToken({ id: user.id });
+
+        return { token, user };
+    }
+
+    async signInTON(data: CheckProofDto) {
+        await this.tonProofService.checkProof(data);
 
         const user = await this.userService.getOrCreateUser(data.address);
 
