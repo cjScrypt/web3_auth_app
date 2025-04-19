@@ -1,10 +1,11 @@
-import { ethers } from "ethers";
+import { EvmProofService } from "./evmProofService";
+import { TonProofService } from "./tonProof.service";
 import { UserService } from "./user.service";
 import { CHAIN_ID, CheckProofDto, WalletSignInDto } from "../types";
 import { JwtUtils } from "../utils";
-import { TonProofService } from "./tonProof.service";
 
 export class AuthService {
+    private readonly evmProofService: EvmProofService;
     private readonly tonProofService: TonProofService;
     private readonly userService: UserService;
 
@@ -20,31 +21,8 @@ export class AuthService {
         return payloadToken;
     }
 
-    private checkProofEVM(data: WalletSignInDto) {
-        const decoded = JwtUtils.verifyToken(data.payloadToken);
-        if (!decoded) {
-            throw new Error("Invalid or expired token");
-        }
-
-        if (decoded.chainId !== CHAIN_ID.EVM) {
-            throw new Error("Chain mismatch. Expected 'EVM' signature");
-        }
-
-        const expectedAddress = decoded.address;
-        if (data.address != expectedAddress) {
-            throw new Error("Invalid wallet address");
-        }
-
-        const recoveredAddress = ethers.verifyMessage(expectedAddress, data.proof);
-        if (recoveredAddress.toLowerCase() !== expectedAddress.toLowerCase()) {
-            throw new Error("Invalid signature");
-        }
-
-        return true;
-    }
-
     async signInEVM(data: WalletSignInDto) {
-        this.checkProofEVM(data);
+        this.evmProofService.checkProof(data);
 
         const user = await this.userService.getOrCreateUser(data.address);
 
