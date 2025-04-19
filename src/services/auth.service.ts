@@ -1,12 +1,15 @@
 import { ethers } from "ethers";
 import { UserService } from "./user.service";
-import { CHAIN_ID, WalletSignInDto } from "../types";
+import { CHAIN_ID, CheckProofDto, WalletSignInDto } from "../types";
 import { JwtUtils } from "../utils";
+import { TonProofService } from "./tonProof.service";
 
 export class AuthService {
+    private readonly tonProofService: TonProofService;
     private readonly userService: UserService;
 
     constructor() {
+        this.tonProofService = new TonProofService();
         this.userService = new UserService()
     }
 
@@ -42,6 +45,16 @@ export class AuthService {
 
     async signInEVM(data: WalletSignInDto) {
         this.checkProofEVM(data);
+
+        const user = await this.userService.getOrCreateUser(data.address);
+
+        const token = JwtUtils.generateAuthToken({ id: user.id });
+
+        return { token, user };
+    }
+
+    async signInTON(data: CheckProofDto) {
+        await this.tonProofService.checkProof(data);
 
         const user = await this.userService.getOrCreateUser(data.address);
 

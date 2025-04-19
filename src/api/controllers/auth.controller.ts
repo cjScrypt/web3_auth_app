@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { AuthService } from "../../services";
-import { GeneratePayloadDto, WalletSignInDto } from "../../types";
+import { CheckProofDto, GeneratePayloadDto, WalletSignInDto } from "../../types";
 
 export class AuthController {
     static async generatePayload(req: Request, res: Response, next: NextFunction) {
@@ -29,6 +29,21 @@ export class AuthController {
             });
 
             res.status(200).json({ data });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    static async signinTON(req: Request, res: Response, next: NextFunction) {
+        try {
+            const data = req.body as CheckProofDto;
+
+            const { user, token } = await (new AuthService()).signInTON(data);
+
+            res.status(200).json({ data: {
+                user,
+                token
+            }});
         } catch (error) {
             next(error);
         }
