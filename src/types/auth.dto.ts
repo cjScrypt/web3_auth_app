@@ -13,8 +13,13 @@ export class GeneratePayloadDto {
     chainId: CHAIN_ID;
 }
 
-export interface WalletSignInDto {
-    proof: string,
-    address: string,
-    payloadToken: string
+export class WalletSignInDto {
+    @IsString()
+    proof: string;
+
+    @IsString()
+    address: string;
+
+    @IsString()
+    payloadToken: string;
 }
