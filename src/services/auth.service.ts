@@ -15,6 +15,14 @@ export class AuthService {
         this.userService = new UserService()
     }
 
+    private async loginByAddress(address: string) {
+        const user = await this.userService.getOrCreateUser(address);
+
+        const token = JwtUtils.generateAuthToken({ id: user.id });
+
+        return { token, user };
+    }
+
     private async verifySigninPayload(payloadToken: string, address: string, chainId: CHAIN_ID) {
         const decoded = JwtUtils.verifyToken(payloadToken);
         if (!decoded) {
@@ -48,11 +56,7 @@ export class AuthService {
 
         this.evmProofService.checkProof(data);
 
-        const user = await this.userService.getOrCreateUser(data.address);
-
-        const token = JwtUtils.generateAuthToken({ id: user.id });
-
-        return { token, user };
+        return this.loginByAddress(data.address);
     }
 
     async signInTON(data: CheckProofDto) {
@@ -64,10 +68,6 @@ export class AuthService {
 
         await this.tonProofService.checkProof(data);
 
-        const user = await this.userService.getOrCreateUser(data.address);
-
-        const token = JwtUtils.generateAuthToken({ id: user.id });
-
-        return { token, user };
+        return this.loginByAddress(data.address);
     }
 }
