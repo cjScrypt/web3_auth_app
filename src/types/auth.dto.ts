@@ -13,7 +13,7 @@ export class GeneratePayloadDto {
     chainId: CHAIN_ID;
 }
 
-export class WalletSignInDto {
+export class CheckEvmProofDto {
     @IsString()
     proof: string;
 

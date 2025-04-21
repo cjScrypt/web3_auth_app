@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { AuthService } from "../../services";
-import { CheckProofDto, GeneratePayloadDto, WalletSignInDto } from "../../types";
+import { CheckProofDto, GeneratePayloadDto, CheckEvmProofDto } from "../../types";
 
 export class AuthController {
     static async generatePayload(req: Request, res: Response, next: NextFunction) {
@@ -20,7 +20,7 @@ export class AuthController {
 
     static async signinEVM(req: Request, res: Response, next: NextFunction) {
         try {
-            const { proof, address, payloadToken } = req.body as WalletSignInDto;
+            const { proof, address, payloadToken } = req.body as CheckEvmProofDto;
 
             const data = await (new AuthService()).signInEVM({
                 proof,

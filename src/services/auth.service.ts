@@ -1,7 +1,7 @@
 import { EvmProofService } from "./evmProofService";
 import { TonProofService } from "./tonProof.service";
 import { UserService } from "./user.service";
-import { CHAIN_ID, CheckProofDto, WalletSignInDto } from "../types";
+import { CHAIN_ID, CheckProofDto, CheckEvmProofDto } from "../types";
 import { JwtUtils } from "../utils";
 
 export class AuthService {
@@ -47,7 +47,7 @@ export class AuthService {
         return payloadToken;
     }
 
-    async signInEVM(data: WalletSignInDto) {
+    async signInEVM(data: CheckEvmProofDto) {
         await this.verifySigninPayload(
             data.payloadToken,
             data.address,

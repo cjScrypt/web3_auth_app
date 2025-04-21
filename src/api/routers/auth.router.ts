@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { AuthController } from "../controllers";
 import { AppMiddleware } from "../../middlewares";
-import { CheckProofDto, GeneratePayloadDto, WalletSignInDto } from "../../types";
+import { CheckProofDto, GeneratePayloadDto, CheckEvmProofDto } from "../../types";
 
 export const authRouter = Router();
 
@@ -13,7 +13,7 @@ authRouter.post(
 
 authRouter.post(
     "signin-evm",
-    AppMiddleware.validateDto(WalletSignInDto),
+    AppMiddleware.validateDto(CheckEvmProofDto),
     AuthController.signinEVM
 );
 
