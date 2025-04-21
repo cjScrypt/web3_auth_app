@@ -8,3 +8,6 @@ export const JWT_SECRET = process.env.JWT_SECRET || "";
 // Ton API Config
 export const TON_API_MAINNET = process.env.TON_API_ENDPOINT || "";
 export const TON_API_TESTNET = process.env.TON_API_TESTNET || "";
+
+// Redis Config
+export const REDIS_URL = process.env.REDIS_URL || "";
