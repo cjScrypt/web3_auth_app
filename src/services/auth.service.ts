@@ -54,7 +54,10 @@ export class AuthService {
             CHAIN_ID.EVM
         );
 
-        this.evmProofService.checkProof(data);
+        const isValid = this.evmProofService.checkProof(data);
+        if (!isValid) {
+            throw new Error("Invalid proof");
+        }
 
         return this.loginByAddress(data.address);
     }

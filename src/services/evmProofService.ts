@@ -7,7 +7,7 @@ export class EvmProofService {
         const recoveredAddress = ethers.verifyMessage(expectedAddress, data.proof);
 
         if (recoveredAddress.toLowerCase() !== expectedAddress.toLowerCase()) {
-            throw new Error("Invalid signature");
+            return false;
         }
 
         return true;
