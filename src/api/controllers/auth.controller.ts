@@ -20,10 +20,10 @@ export class AuthController {
 
     static async signinEVM(req: Request, res: Response, next: NextFunction) {
         try {
-            const { proof, address, payloadToken } = req.body as CheckEvmProofDto;
+            const { signature, address, payloadToken } = req.body as CheckEvmProofDto;
 
             const data = await (new AuthService()).signInEVM({
-                proof,
+                signature,
                 address,
                 payloadToken
             });

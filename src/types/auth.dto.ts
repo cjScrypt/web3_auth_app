@@ -15,7 +15,7 @@ export class GeneratePayloadDto {
 
 export class CheckEvmProofDto {
     @IsString()
-    proof: string;
+    signature: string;
 
     @IsString()
     address: string;

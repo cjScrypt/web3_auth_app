@@ -4,7 +4,7 @@ import { CheckEvmProofDto } from "../types";
 export class EvmProofService {
     checkProof(data: CheckEvmProofDto) {
         const expectedAddress = data.address;
-        const recoveredAddress = ethers.verifyMessage(expectedAddress, data.proof);
+        const recoveredAddress = ethers.verifyMessage(expectedAddress, data.signature);
 
         if (recoveredAddress.toLowerCase() !== expectedAddress.toLowerCase()) {
             return false;
