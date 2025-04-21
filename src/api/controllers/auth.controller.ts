@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { AuthService } from "../../services";
-import { CheckProofDto, GeneratePayloadDto, CheckEvmProofDto } from "../../types";
+import { CheckTonProofDto, GeneratePayloadDto, CheckEvmProofDto } from "../../types";
 
 export class AuthController {
     static async generatePayload(req: Request, res: Response, next: NextFunction) {
@@ -36,7 +36,7 @@ export class AuthController {
 
     static async signinTON(req: Request, res: Response, next: NextFunction) {
         try {
-            const data = req.body as CheckProofDto;
+            const data = req.body as CheckTonProofDto;
 
             const { user, token } = await (new AuthService()).signInTON(data);
 

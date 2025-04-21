@@ -3,7 +3,7 @@ import { sha256 } from "@ton/crypto";
 import { sign } from "tweetnacl";
 
 import { TonApiService } from "./tonApi.service";
-import { CheckProofDto } from "../types";
+import { CheckTonProofDto } from "../types";
 import { parsePublicKey } from "../utils";
 
 const tonProofPrefix = "ton-proof-item-v2/";
@@ -12,7 +12,7 @@ const allowedDomains: string[] = []
 const validAuthTime = 15 * 60; // 15 minutes
 
 export class TonProofService {
-    async checkProof(payload: CheckProofDto) {
+    async checkProof(payload: CheckTonProofDto) {
         try {
             const stateInit = loadStateInit(Cell.fromBase64(payload.proof.state_init).beginParse());
             const client = TonApiService.create(payload.network)
@@ -59,7 +59,7 @@ export class TonProofService {
      * Rebuilds the TonConnect message and verifies the authenticity of the `CheckProofDto.signature`
      * using the `tweetnacl.sign.detached.verify` method.
      */
-    private async verifySignature(payload: CheckProofDto, address: Address, publicKey: Buffer<ArrayBuffer>) {
+    private async verifySignature(payload: CheckTonProofDto, address: Address, publicKey: Buffer<ArrayBuffer>) {
         const message = {
             workchain: address.workChain,
             address: address.hash,

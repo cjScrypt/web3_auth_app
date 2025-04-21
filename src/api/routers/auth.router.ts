@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { AuthController } from "../controllers";
 import { AppMiddleware } from "../../middlewares";
-import { CheckProofDto, GeneratePayloadDto, CheckEvmProofDto } from "../../types";
+import { CheckTonProofDto, GeneratePayloadDto, CheckEvmProofDto } from "../../types";
 
 export const authRouter = Router();
 
@@ -19,6 +19,6 @@ authRouter.post(
 
 authRouter.post(
     "signin-ton",
-    AppMiddleware.validateDto(CheckProofDto),
+    AppMiddleware.validateDto(CheckTonProofDto),
     AuthController.signinEVM
 );

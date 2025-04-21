@@ -14,7 +14,7 @@ class DomainDto {
     value: string;
 }
 
-class ProofDto {
+class TonProofDto {
     @IsNumber()
     timestamp: number;
 
@@ -31,7 +31,7 @@ class ProofDto {
     state_init: string;
 }
 
-export class CheckProofDto {
+export class CheckTonProofDto {
     @IsString()
     address: string;
 
@@ -42,5 +42,5 @@ export class CheckProofDto {
     public_key: string;
 
     @ValidateNested()
-    proof: ProofDto
+    proof: TonProofDto;
 }
