@@ -66,7 +66,10 @@ export class AuthService {
             CHAIN_ID.TON
         );
 
-        await this.tonProofService.checkProof(data);
+        const isValid = await this.tonProofService.checkProof(data);
+        if (!isValid) {
+            throw new Error("Invalid proof");
+        }
 
         return this.loginByAddress(data.address);
     }
