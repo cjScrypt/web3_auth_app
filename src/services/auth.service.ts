@@ -72,6 +72,9 @@ export class AuthService {
             throw new Error("Invalid proof");
         }
 
+        const key = `nonce_${data.address}`;
+        await this.redisService.deleteValue(key);
+
         return this.loginByAddress(data.address);
     }
 
@@ -86,6 +89,9 @@ export class AuthService {
         if (!isValid) {
             throw new Error("Invalid proof");
         }
+
+        const key = `nonce_${data.address}`;
+        await this.redisService.deleteValue(key);
 
         return this.loginByAddress(data.address);
     }

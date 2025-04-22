@@ -25,4 +25,8 @@ export class RedisService {
 
         return JSON.parse(data);
     }
+
+    async deleteValue(key: string) {
+        return this.client.del(key);
+    }
 }
