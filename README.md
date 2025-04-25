@@ -42,11 +42,11 @@ yarn install
 ```
 * Set environment variables
 ```vim
-PORT=your_app_port
-DATABASE_URL=your_db_url
-JWT_SECRET=your_jwt_secret
-TON_API_MAINNET=ton_mainnet_api_url
-TON_API_TESTNET=ton_testnet_api_url
+PORT="your_app_port"
+DATABASE_URL="your_db_url"
+JWT_SECRET="your_jwt_secret"
+TON_API_MAINNET="ton_mainnet_api_url"
+TON_API_TESTNET="ton_testnet_api_url"
 ```
 * Run the server
 ```bash
@@ -58,14 +58,14 @@ Server will start on http://localhost:3000 (or the port you configure).
 <code>POST /auth/generatePayload</code><br>
 
 * Request Body
-  ```json
+  ```js
   {
     "address": "0x...",
     "chainId": "string" // evm or ton
   }
   ```
 * Response Body
-  ```json
+  ```js
   {
     "data": "string" // payload
   }
@@ -74,7 +74,7 @@ Server will start on http://localhost:3000 (or the port you configure).
 <code>POST /auth/signin-evm</code><br>
 
 * Request Body
-  ```json
+  ```js
   {
     "proof": "", //
     "address": "0x...",
@@ -83,7 +83,7 @@ Server will start on http://localhost:3000 (or the port you configure).
   ```
 
 * Response Body
-  ```json
+  ```js
   {
     "data": {
         "token": "",
@@ -97,15 +97,15 @@ Server will start on http://localhost:3000 (or the port you configure).
   }
   ```
 
-  <code>POST /auth/signin-ton</code>
+<code>POST /auth/signin-ton</code>
   * Request Body
-    ```json
+    ```js
     {
         "address": "",
         "network": "", // Enum [ CHAIN.MAINNET or CHAIN.TESTNET ]
         "public_key": "",
         "proof": {
-            "timestamp": 1745254673793,
+            "timestamp": 1745254673793, // Date.now()
             "domain": {
                 "lengthBytes": 1,
                 "value": ""
