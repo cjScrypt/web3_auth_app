@@ -56,13 +56,10 @@ Server will start on http://localhost:3000 (or the port you configure).
 ![Signin Flowchart](./flowchart.svg)<br>
 <br>1. <b>Client Requests Payload</b>
   * The client (frontend) sends a request to the API to generate a payload for authentication.
-
-  * The payload includes a unique nonce and is signed on the server-side.
+  * The payload includes a unique nonce and is signed on the server-side.<br>
 
 <br>2. <b>User Signs the Payload</b>
-
   * The client asks the user to sign the received payload using their wallet (EVM or TON).
-
  * The wallet returns a signed message (proof).
 
 <br>3. <b>Client Submits Proof</b>
@@ -70,19 +67,14 @@ Server will start on http://localhost:3000 (or the port you configure).
   * The client sends the signed proof, wallet address, and the original payload back to the API for verification.
 
 <br>4. <b>Server Verifies the Proof</b>
-
   * The server verifies:
-
     * The proof matches the original payload.
-
     * The address matches the signer.
-
     * The payload nonce is still valid and unused.
 
 <br>5. <b>Successful Authentication</b>
 
   * If all checks pass, the server returns a signed JWT token to the client.
-
   * The client can now use the JWT token for authenticated requests.
 
 
