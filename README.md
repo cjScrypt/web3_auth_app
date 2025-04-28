@@ -12,8 +12,6 @@
    * POST /auth/payload
    * POST /auth/verify
 6. [Frontend Integration](#frontend-integration)
-   * TON Frontend Integration
-   * EVM Frontend Integration
 7. [Security Notes](#security-notes)
 8. [Contributing](#contributing)
 9. [License](#license)
@@ -26,57 +24,57 @@ Instead of using traditional credentials (email/password), this API enables web 
 ## Why Use This?
 * Passwordless login using wallet signatures
 * Cross-chain support (EVM + TON)
-* Secure: Short signin payload expiration to minimize replay attacks
+* Secure: Prevents replay attacks with nonce + timestamps
 * Modular: Easy to plug into any web2/web3 frontend
 
 ## Installation
 * Clone the repository
-```bash
-git clone https://github.com/cjScrypt/web3_auth_app
-```
+  ```bash
+  git clone https://github.com/cjScrypt/web3_auth_app
+  ```
 * Install dependencies
-```bash
-npm install
-# or
-yarn install
-```
+  ```bash
+  npm install
+  # or
+  yarn install
+  ```
 * Set environment variables
-```vim
-PORT="your_app_port"
-DATABASE_URL="your_db_url"
-JWT_SECRET="your_jwt_secret"
-TON_API_MAINNET="ton_mainnet_api_url"
-TON_API_TESTNET="ton_testnet_api_url"
-```
+  ```vim
+  PORT="your_app_port"
+  DATABASE_URL="your_db_url"
+  JWT_SECRET="your_jwt_secret"
+  TON_API_MAINNET="ton_mainnet_api_url"
+  TON_API_TESTNET="ton_testnet_api_url"
+  ```
 * Run the server
-```bash
-npm run dev
-```
+  ```bash
+  npm run dev
+  ```
 Server will start on http://localhost:3000 (or the port you configure).
 
 ## API Reference
 <code>POST /auth/generatePayload</code><br>
 
-* Request Body
+* Request Body: <code>GeneratePayloadDto</code>
   ```js
   {
-    "address": "0x...",
-    "chainId": "string" // evm or ton
+    "address": "",
+    "chainId": ""
   }
   ```
 * Response Body
   ```js
   {
-    "data": "string" // payload
+    "data": "" // payload
   }
   ```
 <br>
 <code>POST /auth/signin-evm</code><br>
 
-* Request Body
+* Request Body: <code>CheckEvmProofDto</code>
   ```js
   {
-    "proof": "", //
+    "proof": "",
     "address": "0x...",
     "payloadToken": ""
   }
@@ -90,22 +88,22 @@ Server will start on http://localhost:3000 (or the port you configure).
         "user": {
             "id": "",
             "walletAddress": "0x...",
-            "firstName": "", // string | null
-            "lastName": "" // string | null;
+            "firstName": "",
+            "lastName": ""
         }
     }
   }
   ```
 
 <code>POST /auth/signin-ton</code>
-  * Request Body
+  * Request Body: <code>CheckTonProofDto</code>
     ```js
     {
         "address": "",
-        "network": "", // Enum [ CHAIN.MAINNET or CHAIN.TESTNET ]
+        "network": "",
         "public_key": "",
         "proof": {
-            "timestamp": 1745254673793, // Date.now()
+            "timestamp": 1745254673793,
             "domain": {
                 "lengthBytes": 1,
                 "value": ""
@@ -116,3 +114,37 @@ Server will start on http://localhost:3000 (or the port you configure).
         }
     }
     ```
+
+Types
+  * <code>GeneratePayloadDto</code>:
+    * address (string): User's wallet address
+    * chainId (string): Blockchain type. Allowed values: `ton` or `evm`
+
+  * <code>CheckEvmProofDto</code>
+    * proof (string): Wallet signature of `payloadToken`
+    * address (string): User's address
+    * payloadToken (string): Payload from the request
+
+  * <code>CheckTonProofDto</code>
+    * address: User's TON wallet address,
+    *  network (string): Blockchain network. Allowed values: `CHAIN.TESTNET` or `CHAIN.MAINNET`
+    * public_key (string): User's public key,
+    * proof (string):
+      * timestamp (Date): Time of signing (Date.now()),
+      * domain:
+        * lengthBytes (number): Length of the frontend domain name
+        * value (string): Frontend domain name
+      * payload (string): Payload from the request
+      * signature (string): Base64-encoded signature
+      * state_init (string): Wallet state init, used to reconstruct and verify the wallet address
+
+## Security Notes
+* <b>Payload Expiration</b>: Payloads are short-lived and expire after a limited time window to reduce the risk of replay attacks.
+* <b>Nonce Verification</b>: Payloads are associated with a unique nonce stored temporarily in Redis. This nonce is removed from cache on expiration or successful verification.
+* <b>Signature Validation</b>: Wallet signatures are strictly verified against the original payload and expected address
+
+## Contributing
+Contributions are welcome. Please open an issue or submit a pull request if you would like to help improve the project. Thank you!
+
+## License
+Licensed under the <b>MIT License</b>
